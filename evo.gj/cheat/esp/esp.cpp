@@ -5,7 +5,7 @@ void Esp::ActorLoop() {
 	
 	//get address
 	{
-		LocalPtrs::Gworld = read<uint64_t>(BaseId + 0x11E88988); //https://dumpspace.spuckwaffel.com/Games/?hash=6b77eceb&type=offsets
+		LocalPtrs::Gworld = read<uint64_t>(BaseId + 0x124BF388); //https://dumpspace.spuckwaffel.com/Games/?hash=6b77eceb&type=offsets
 		if (Debug::PrintPointers) Util::PrintPtr("Uworld: ", LocalPtrs::Gworld);
 		if (!LocalPtrs::Gworld) return;
 
