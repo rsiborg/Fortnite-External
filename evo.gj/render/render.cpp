@@ -495,9 +495,9 @@ void Render::Menu() {
 	if (GetAsyncKeyState(VK_INSERT) & 1) bMenu = !bMenu;
 	if (bMenu)
 	{
-		static POINT Mouse;
-		GetCursorPos(&Mouse);
-		ImGui::GetOverlayDrawList()->AddCircleFilled(ImVec2(Mouse.x, Mouse.y), float(4), ImColor(255,0,0), 50);
+		//static POINT Mouse;
+		//GetCursorPos(&Mouse);
+		//ImGui::GetOverlayDrawList()->AddCircleFilled(ImVec2(Mouse.x, Mouse.y), float(4), ImColor(255,0,0), 50);
 
 		ImGui::SetNextWindowSize({ 620.f,350.f });
 
@@ -540,6 +540,7 @@ void Render::Menu() {
 			ImGui::Text("Evo-Aim:");
 			ImGui::Checkbox("Aimbot", &bAimbot);
 			ImGui::SliderFloat("Smooth", &Smooth, 2, 15);
+			ImGui::Checkbox("FOV Circle", &bFov);
 			ImGui::SliderInt("Fov Size", &FovSize, 50, 600);
 			
 			
@@ -551,16 +552,19 @@ void Render::Menu() {
 			ImGui::SetCursorPos({ 19.f,14.f });
 			ImGui::Text("Evo-Enemy:");
 			ImGui::Checkbox("Corner Box", &bCornerBox);
+			ImGui::Checkbox("Line Esp", &bLineEsp);
 			
 			
 			
 		}
 		if (MenuTab == 2)
 		{
+			float ESPColor[3] = { 0,0,0 };
 			ImGui::SetCursorPos({ 137.f,39.f });
 			ImGui::BeginChild("##Misc", { 450.f,279.f }, true);
 			ImGui::SetCursorPos({ 19.f,14.f });
 			ImGui::Text("Evo-Gay:");
+			ImGui::Checkbox("Crosshair", &bCrosshair);
 		}
 		ImGui::EndChild();
 		ImGui::End();

@@ -1,11 +1,13 @@
 #include "esp.h"
 
 void Esp::ActorLoop() {
+	ImVec2 center = ImVec2(Width / 2, Height / 2);
 	//I will link dumps.host to each offset, on the website it might be outdated but it gives you a understanding of the sdk
 	
 	//get address
+
 	{
-		LocalPtrs::Gworld = read<uint64_t>(BaseId + 0x11E88988); //https://dumpspace.spuckwaffel.com/Games/?hash=6b77eceb&type=offsets
+		LocalPtrs::Gworld = read<uint64_t>(BaseId + 0x124bf388); //https://dumpspace.spuckwaffel.com/Games/?hash=6b77eceb&type=offsets
 		if (Debug::PrintPointers) Util::PrintPtr("Uworld: ", LocalPtrs::Gworld);
 		if (!LocalPtrs::Gworld) return;
 
@@ -72,6 +74,23 @@ void Esp::ActorLoop() {
 
 			if (bCornerBox)
 				Util::DrawCornerBox(Head2D.x - (CornerWidth / 2), Head2D.y, CornerWidth, CornerHeight, IM_COL32(0, 173, 237, 255), 1.5);
+
+			if (bFov) {
+				ImGui::GetOverlayDrawList()->AddCircle(center, FovSize, ImColor(0, 0, 0), 100, 2);
+			}
+
+			if (bLineEsp) {
+				ImGui::GetOverlayDrawList()->AddLine(center, ImVec2(Head2D.x, Head2D.y), ImColor(0,0,0), 2);
+			}
+
+			if (bCrosshair) {
+				ImGui::GetOverlayDrawList()->AddLine(ImVec2(Width / 2 - 11, Height / 2), ImVec2(Width / 2 + 1, Height / 2), ImColor(255, 255, 255), 2);
+				ImGui::GetOverlayDrawList()->AddLine(ImVec2(Width / 2 + 12, Height / 2), ImVec2(Width / 2 + 1, Height / 2), ImColor(255, 255, 255), 2);
+				ImGui::GetOverlayDrawList()->AddLine(ImVec2(Width / 2, Height / 2 -11 ), ImVec2(Width / 2, Height / 2 ), ImColor(255, 255, 255), 2);
+				ImGui::GetOverlayDrawList()->AddLine(ImVec2(Width / 2, Height / 2 + 12), ImVec2(Width / 2, Height / 2), ImColor(255, 255, 255), 2);
+			}
+
+
 			
 			auto dist = Util::GetCrossDistance(Head2D.x, Head2D.y, Width / 2, Height / 2);
 			if (dist < FovSize && dist < ClosestDistance) {

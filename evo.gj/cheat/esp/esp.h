@@ -8,6 +8,8 @@ public:
 };
 inline bool bCornerBox = true;
 inline bool SelfEsp = true;
+inline bool bLineEsp = true;
+inline bool bCrosshair = false;
 
 namespace Debug {
 	static bool PrintPointers = true;
