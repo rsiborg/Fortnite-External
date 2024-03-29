@@ -168,7 +168,7 @@ void Esp::ActorLoop() {
 
 			float BoxHeight = (float)(Head2D.y - Bottom2D.y);
 			float CornerHeight = abs(Head2D.y - Bottom2D.y);
-			float CornerWidth = BoxHeight * 0.80;
+			float CornerWidth = BoxHeight * 0.4;
 
 
 			if (bCornerBox)
@@ -194,8 +194,10 @@ void Esp::ActorLoop() {
 				/*std::string distance_string = "" + std::to_string((int)dist) + " M";*/
 
 				char fpsinfo[64];
-				Vector3 bonehere = SDK::GetBoneWithRotation(Mesh, 68);
-				float distance = LocalActorPos.Distance(bonehere) / 100.f;
+				Vector3 bonehere = SDK::GetBoneWithRotation(Mesh, 106);
+
+				Camera camera;
+				float distance = camera.Location.Distance(Head3D) / 100.f;
 
 				char name[64];
 				sprintf_s(name, "[%2.fm]", distance);
@@ -205,6 +207,9 @@ void Esp::ActorLoop() {
 			ImColor SkeleColor = ImColor(255, 255, 255);
 
 			if (bSkeletonESP) {
+				
+				ImGui::GetOverlayDrawList()->AddCircle(ImVec2(Head2D.x, Head2D.y - 15), 15, ImColor(255,255,255), 102, 2);
+
 
 				ImGui::GetOverlayDrawList()->AddLine(ImVec2(Head2D.x, Head2D.y), ImVec2(Neck2D.x, Neck2D.y), SkeleColor, 2);
 				ImGui::GetOverlayDrawList()->AddLine(ImVec2(Neck2D.x, Neck2D.y), ImVec2(Pelvis2D.x, Pelvis2D.y), SkeleColor, 2);
