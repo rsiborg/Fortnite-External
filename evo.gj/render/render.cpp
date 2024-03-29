@@ -547,13 +547,38 @@ void Render::Menu() {
 		}
 		if (MenuTab == 1)
 		{
+			
+
+
 			ImGui::SetCursorPos({ 137.f,39.f });
 			ImGui::BeginChild("##Visuals", { 450.f,279.f }, true);
 			ImGui::SetCursorPos({ 19.f,14.f });
 			ImGui::Text("Evo-Enemy:");
 			ImGui::Checkbox("Corner Box", &bCornerBox);
+			ImGui::Checkbox("Skeleton ESP", &bSkeletonESP);
+			ImGui::Checkbox("Skeleton Hand ESP", &bHandESP);
 			ImGui::Checkbox("Line Esp", &bLineEsp);
-			
+			const char* LineEspOptions[] = { "Center", "Top", "Bottom"};
+			static const char* current_item = "Center";
+			if (ImGui::BeginCombo("##combo", &*current_item))
+			{
+				for (int n = 0; n < IM_ARRAYSIZE(LineEspOptions); n++)
+				{
+					bool is_selected = (current_item == LineEspOptions[n]);
+					if (ImGui::Selectable(LineEspOptions[n], is_selected)){
+						current_item = LineEspOptions[n];
+						bCurry = current_item;
+						std::cout << "Updated BCURRY" << std::endl;
+						std::cout << bCurry << std::endl;
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();
+							bCurry = LineEspOptions[n];
+						}
+				}
+					}
+				ImGui::EndCombo();
+			}
+			ImGui::Checkbox("Distance Esp", &bDistanceESP);
 			
 			
 		}

@@ -122,6 +122,54 @@ void Util::Print3D(std::string text, Vector3 pos) {
 double Util::GetCrossDistance(double x1, double y1, double x2, double y2) {
 	return sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
 }
+inline std::string WStringToUTF8(const wchar_t* lpwcszWString)
+{
+	char* pElementText;
+	int iTextLen = ::WideCharToMultiByte(CP_UTF8, 0, (LPWSTR)lpwcszWString, -1, NULL, 0, NULL, NULL);
+	pElementText = new char[iTextLen + 1];
+	memset((void*)pElementText, 0, (iTextLen + 1) * sizeof(char));
+	::WideCharToMultiByte(CP_UTF8, 0, (LPWSTR)lpwcszWString, -1, pElementText, iTextLen, NULL, NULL);
+	std::string strReturn(pElementText);
+	delete[] pElementText;
+	return strReturn;
+}
+
+inline std::wstring MBytesToWString(const char* lpcszString)
+{
+
+
+	int len = strlen(lpcszString);
+	int unicodeLen = ::MultiByteToWideChar(CP_ACP, 0, lpcszString, -1, NULL, 0);
+	wchar_t* pUnicode = new wchar_t[unicodeLen + 1];
+	memset(pUnicode, 0, (unicodeLen + 1) * sizeof(wchar_t));
+	::MultiByteToWideChar(CP_ACP, 0, lpcszString, -1, (LPWSTR)pUnicode, unicodeLen);
+	std::wstring wString = (wchar_t*)pUnicode;
+	delete[] pUnicode;
+	return wString;
+}
+inline void DrawString(float fontSize, int x, int y, ImColor color, bool bCenter, bool stroke, const char* pText, ...)
+{
+	va_list va_alist;
+	char buf[1024] = { 0 };
+	va_start(va_alist, pText);
+	_vsnprintf_s(buf, sizeof(buf), pText, va_alist);
+	va_end(va_alist);
+	std::string text = WStringToUTF8(MBytesToWString(buf).c_str());
+	if (bCenter)
+	{
+		ImVec2 textSize = ImGui::CalcTextSize(text.c_str());
+		x = x - textSize.x / 4;
+		y = y - textSize.y;
+	}
+	if (stroke)
+	{
+		ImGui::GetOverlayDrawList()->AddText(ImGui::GetFont(), fontSize, ImVec2(x + 1, y + 1), ImGui::ColorConvertFloat4ToU32(ImVec4(0, 0, 0, 1)), text.c_str());
+		ImGui::GetOverlayDrawList()->AddText(ImGui::GetFont(), fontSize, ImVec2(x - 1, y - 1), ImGui::ColorConvertFloat4ToU32(ImVec4(0, 0, 0, 1)), text.c_str());
+		ImGui::GetOverlayDrawList()->AddText(ImGui::GetFont(), fontSize, ImVec2(x + 1, y - 1), ImGui::ColorConvertFloat4ToU32(ImVec4(0, 0, 0, 1)), text.c_str());
+		ImGui::GetOverlayDrawList()->AddText(ImGui::GetFont(), fontSize, ImVec2(x - 1, y + 1), ImGui::ColorConvertFloat4ToU32(ImVec4(0, 0, 0, 1)), text.c_str());
+	}
+	ImGui::GetOverlayDrawList()->AddText(ImGui::GetFont(), fontSize, ImVec2(x, y), ImColor(color), text.c_str());
+}
 D3DMATRIX MatrixMultiplication(D3DMATRIX pM1, D3DMATRIX pM2)
 {
 	D3DMATRIX pOut;
@@ -179,3 +227,62 @@ D3DMATRIX Matrix(Vector3 rot, Vector3 origin) {
 
 	return matrix;
 }
+class FVector
+{
+public:
+	double x, y, z;
+	FVector()
+	{
+		x = y = z = 0.f;
+	}
+
+	FVector(double _x, double _y, double _z)
+	{
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+
+	FVector operator+(const FVector& v) {
+		return FVector{ x + v.x, y + v.y, z + v.z };
+	}
+
+	FVector operator-(const FVector& v) {
+		return FVector{ x - v.x, y - v.y, z - v.z };
+	}
+
+	FVector operator*(const double v) {
+		return FVector{ x * v, y * v, z * v };
+	}
+
+	FVector operator/(const double fl) const {
+		return FVector(x / fl, y / fl, z / fl);
+	}
+
+
+	inline double length() {
+		return sqrt(x * x + y * y + z * z);
+	}
+
+	inline double DistanceFrom(const FVector Other) {
+		double dx = (this->x - Other.x);
+		double dy = (this->y - Other.y);
+		double dz = (this->z - Other.z);
+
+		return sqrt((dx * dx) + (dy * dy) + (dz * dz));
+	}
+	inline double Distance(Vector3 v)
+	{
+		return double(sqrtf(powf(v.x - x, 2.0) + powf(v.y - y, 2.0) + powf(v.z - z, 2.0)));
+	}
+
+	__forceinline double Size() const {
+		return (double)sqrtf((float)x * (float)x + (float)y * (float)y + (float)z * (float)z);
+	}
+
+	double Dot(const FVector& vOther) const {
+		const FVector& a = *this;
+
+		return (a.x * vOther.x + a.y * vOther.y + a.z * vOther.z);
+	}
+};

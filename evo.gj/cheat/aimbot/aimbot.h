@@ -10,4 +10,7 @@ inline int FovSize = 200;
 inline float Smooth = 4;
 inline bool bAimbot = true;
 inline bool bFov = true;
+inline bool bSkeletonESP = false;
+inline bool bHandESP = false;
 inline bool bIsTargeting = false;
+inline bool bDistanceESP = false;
