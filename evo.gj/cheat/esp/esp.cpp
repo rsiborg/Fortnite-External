@@ -1,7 +1,21 @@
-#include "esp.h"
+#include "esp.h";
+#include <iostream>;
 
 void Esp::ActorLoop() {
 	ImVec2 center = ImVec2(Width / 2, Height / 2);
+	float time = ImGui::GetTime();
+
+
+	float frequency = 1.0f;
+	float intensity = 128.0f;
+
+
+	int red = static_cast<int>(128.0f + 128.0f * cos(frequency * time));
+	int green = static_cast<int>(128.0f + 128.0f * cos(frequency * time + 2.0f));
+	int blue = static_cast<int>(128.0f + 128.0f * cos(frequency * time + 4.0f));
+
+	ImColor SkeleColor = ImColor(red, green, blue);
+
 	//I will link dumps.host to each offset, on the website it might be outdated but it gives you a understanding of the sdk
 	
 	//get address
@@ -204,11 +218,11 @@ void Esp::ActorLoop() {
 
 				ImGui::GetOverlayDrawList()->AddText(ImGui::GetFont(), 0, ImVec2(Bottom2D.x, Bottom2D.y), ImColor(0, 0, 0), name);
 			}
-			ImColor SkeleColor = ImColor(255, 255, 255);
 
 			if (bSkeletonESP) {
 				
-				ImGui::GetOverlayDrawList()->AddCircle(ImVec2(Head2D.x, Head2D.y - 15), 15, ImColor(255,255,255), 102, 2);
+				
+				ImGui::GetOverlayDrawList()->AddCircle(ImVec2(Head2D.x, Head2D.y - 15), 15, SkeleColor, 102, 2);
 
 
 				ImGui::GetOverlayDrawList()->AddLine(ImVec2(Head2D.x, Head2D.y), ImVec2(Neck2D.x, Neck2D.y), SkeleColor, 2);
