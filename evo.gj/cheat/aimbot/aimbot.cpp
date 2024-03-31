@@ -1,15 +1,17 @@
 #include "aimbot.h"
 
-void aimbot() {
+void aimbot(Vector3 Head3D) {
 	if (!TargetPawn) return;
 
 	auto mesh = read<uintptr_t>(TargetPawn + 0x318); //https://fn.dumps.host/?class=ACharacter&member=Mesh
+
 	if (!mesh) {
 		ClosestDistance = FLT_MAX;
 		TargetPawn = NULL;
 		bIsTargeting = FALSE;
 	}
-	Vector3 Head3D = SDK::GetBoneWithRotation(mesh, 110);
+
+
 	Vector2 Head2D = SDK::ProjectWorldToScreen(Head3D);
 	
 	auto distance = Util::GetCrossDistance(Head2D.x, Head2D.y, Width / 2, Height / 2);

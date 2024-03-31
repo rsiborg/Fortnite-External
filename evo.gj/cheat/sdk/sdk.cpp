@@ -1,9 +1,8 @@
 #include "sdk.h"
 
-Vector3 SDK::GetBoneWithRotation(uintptr_t mesh, int id)
+Vector3 SDK::GetBoneWithRotation(uintptr_t mesh, int id, FTransform* bonetrans)
 {
-	int IsCached = read<int>(mesh + 0x5F8);
-	auto BoneTransform = read<FTransform>(read<uintptr_t>(mesh + 0x10 * IsCached + 0x5b0) + 0x60 * id);
+	auto BoneTransform = bonetrans[id];
 	
 	FTransform ComponentToWorld = read<FTransform>(mesh + 0x1c0);
 
@@ -19,6 +18,9 @@ struct CamewaDescwipsion
 	float FieldOfView;
 	char Useless[0x18];
 };
+bool SDK::IsVisible() {
+	
+}
 Camera SDK::GetViewAngles() {
 	CamewaDescwipsion camera;
 	auto locationPointer = read<uintptr_t>(LocalPtrs::Gworld + 0x110);

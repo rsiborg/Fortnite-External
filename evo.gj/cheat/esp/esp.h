@@ -5,15 +5,17 @@
 #include <iostream>
 class Esp {
 public:
-	static void ActorLoop();
+	static void ActorLoop(Vector3* out_headbone);
 };
 inline bool bCornerBox = true;
+inline bool bBoxESP = false;
+inline bool bSelfESP = false;
 inline bool SelfEsp = true;
 inline bool bLineEsp = false;
 inline bool bCrosshair = false;
 static const char* bCurry = NULL;
 
 namespace Debug {
-	static bool PrintPointers = true;
+	static bool PrintPointers = false;
 	static bool PrintLocations = false;
 }

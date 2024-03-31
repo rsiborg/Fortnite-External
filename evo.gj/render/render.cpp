@@ -136,7 +136,7 @@ void Render::CreateOverlay()
 
 	RegisterClassExA(&wcex);
 
-	MyHwnd = CreateWindowExA(NULL, ("Magical Fortnite Adventures"), ("On The Hub"), WS_POPUP, Rect.left, Rect.top, Rect.right, Rect.bottom, NULL, NULL, wcex.hInstance, NULL);
+	MyHwnd = CreateWindowA(("Magical Fortnite Adventures"), ("On The Hub"), WS_POPUP, Rect.left, Rect.top, Rect.right, Rect.bottom, NULL, NULL, wcex.hInstance, NULL);
 
 
 	SetWindowLong(MyHwnd, GWL_EXSTYLE, WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW | WS_EX_LAYERED);
@@ -162,15 +162,16 @@ void Render::CleanuoD3D()
 }
 
 void Render::render() {
+	Vector3 Head3D;
 	char fpsinfo[64];
 	sprintf(fpsinfo, ("FPS: %03d"), Util::get_fps());
 	ImGui::GetOverlayDrawList()->AddText(ImGui::GetFont(), 15, ImVec2(50, 50), ImColor(0, 255, 0), fpsinfo);
 	
 	//ImGui::GetOverlayDrawList()->AddRect(ImVec2((1920 / 2) - 100, (1080 / 2) - 100), ImVec2((1920 / 2) + 100, (1080 / 2) + 100), ImColor(0, 255, 0), 0, 0, 3);
-	Esp::ActorLoop();
+	Esp::ActorLoop(&Head3D);
 	if (GetAsyncKeyState(VK_RBUTTON) && bAimbot) {
 		bIsTargeting = true;
-		aimbot();
+		aimbot(Head3D);
 	}
 	else {
 		bIsTargeting = false;
@@ -354,9 +355,10 @@ void Render::Menu() {
 			ImGui::BeginChild("##Visuals", { 450.f,279.f }, true);
 			ImGui::SetCursorPos({ 19.f,14.f });
 			ImGui::Text("Evo-Enemy:");
+			ImGui::Checkbox("Self ESP", &bSelfESP);
 			ImGui::Checkbox("Corner Box", &bCornerBox);
+			ImGui::Checkbox("Rainbow Box", &bBoxESP);
 			ImGui::Checkbox("Skeleton ESP", &bSkeletonESP);
-			ImGui::Checkbox("Skeleton Hand ESP", &bHandESP);
 			ImGui::Checkbox("Line Esp", &bLineEsp);
 			const char* LineEspOptions[] = { "Center", "Top", "Bottom"};
 			static const char* current_item = "Center";

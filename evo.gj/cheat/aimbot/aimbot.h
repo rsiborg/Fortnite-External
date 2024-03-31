@@ -2,7 +2,7 @@
 #include "../sdk/sdk.h"
 #include "../esp/esp.h"
 
-extern void aimbot();
+extern void aimbot(Vector3 Head3D);
 
 inline uintptr_t TargetPawn = 0;
 inline float ClosestDistance = FLT_MAX;

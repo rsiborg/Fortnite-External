@@ -4,8 +4,9 @@
 
 class SDK {
 public:
-	static Vector3 GetBoneWithRotation(uintptr_t mesh, int id);
+	static Vector3 GetBoneWithRotation(uintptr_t mesh, int id, FTransform* bonetrans);
 	static Vector2 ProjectWorldToScreen(Vector3 WorldLocation);
+	static bool IsVisible();
 	static Camera GetViewAngles();
 };
 
